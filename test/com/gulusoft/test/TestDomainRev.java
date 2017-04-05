@@ -188,11 +188,9 @@ public class TestDomainRev {
 				  
 				   
 				if (HttpURLConnection.HTTP_OK == responseCode) {// 连接成功   
-					// 当正确响应时处理数据   
 					StringBuffer sb = new StringBuffer();   
 					String readLine;   
 					BufferedReader responseReader;   
-					// 处理响应流，必须与服务器响应流输出的编码一致   
 					 responseReader = new BufferedReader(new InputStreamReader(httpConn.getInputStream(), "UTF-8"));   
 					while ((readLine = responseReader.readLine()) != null) {   
 						sb.append(readLine).append("\n");   
