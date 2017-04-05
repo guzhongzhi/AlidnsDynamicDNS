@@ -187,7 +187,7 @@ public class TestDomainRev {
 				int responseCode = httpConn.getResponseCode();   
 				  
 				   
-				if (HttpURLConnection.HTTP_OK == responseCode) {// 连接成功   
+				if (HttpURLConnection.HTTP_OK == responseCode) {
 					StringBuffer sb = new StringBuffer();   
 					String readLine;   
 					BufferedReader responseReader;   
