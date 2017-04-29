@@ -64,7 +64,7 @@ public class TestDomainRev {
 			ins.setAccessKeySec(argc[1]);
 			ins.setRootDomainName(argc[2]);
 			ins.setHostName(argc[3]);
-			ins.test();
+			ins.doUpdate();
 			
 		} catch (Exception ex) {
 			ex.printStackTrace();
@@ -119,10 +119,25 @@ public class TestDomainRev {
 		this.hostName = hostName;
 	}
 
+	
 
 
 	@Test
-	public void test() throws InvalidKeyException, NoSuchAlgorithmException, IOException, ServerException, ClientException {
+	public void test() {
+		//0MUe5paBOzKrbMED FtVaYDcrfZlbsUGDtKcAH4wdy4xErv  gulusoft.com home
+		this.setAccessKeyId("0MUe5paBOzKrbMED");
+		this.setAccessKeySec("FtVaYDcrfZlbsUGDtKcAH4wdy4xErv");
+		this.setHostName("home");
+		this.setRootDomainName("gulusoft.com");
+		try {
+			this.doUpdate();
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+	}
+	
+	
+	public void doUpdate() throws InvalidKeyException, NoSuchAlgorithmException, IOException, ServerException, ClientException {
 		
 		String domainName = "gulusoft.com";
 		String homeRecordRr = "home";
@@ -139,12 +154,21 @@ public class TestDomainRev {
 		
 		String ip = getIP();
 		
+		int t = (int) (Math.random() * 100);
+		
+		//ip = "192.168.1." + t;
+		
+		System.out.println("curent ip: " + ip);
+		
+		System.out.println("total recourd: " + list.size());
+		int recordIndex = 1;
 		for(DescribeDomainRecordsResponse.Record record : list) {
 			if(record.getRR().toString().equals(homeRecordRr)) {
 				homeRecord = record;
 			}
-			System.out.println(record.getRR() + " | " + record.getType() + " | " + record.getValue());
+			System.out.println( (recordIndex++ ) + " | " + record.getRR() + " | " + record.getType() + " | " + record.getValue());
 		}
+		
 		if(homeRecord == null) {
 	        AddDomainRecordRequest addReq = new AddDomainRecordRequest();
 	        addReq.setDomainName(domainName);
@@ -154,11 +178,13 @@ public class TestDomainRev {
 	        AddDomainRecordResponse addResponse = client.getAcsResponse(addReq);
 	        System.out.println(addResponse.getRecordId());
 		} else {
-			if(ip.equals(homeRecord.getValue()) == false) {
+			if(ip.equals(homeRecord.getValue()) == false ) {
 				
 				UpdateDomainRecordRequest updateReq = new UpdateDomainRecordRequest();
 				updateReq.setRecordId(homeRecord.getRecordId());
 				updateReq.setValue(ip);
+				updateReq.setRR(homeRecord.getRR());
+				updateReq.setType(homeRecord.getType());
 				
 				UpdateDomainRecordResponse updateResponse = client.getAcsResponse(updateReq);
 				System.out.println(updateResponse.getRecordId());
@@ -167,9 +193,8 @@ public class TestDomainRev {
 				System.out.println("IP STILL:  " + ip);
 			}
 		}
+		System.out.println("UPDATED");
 		
-		
-		fail("Not yet implemented");
 	}
 	
 	protected String getIP() {
