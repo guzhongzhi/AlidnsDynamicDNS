@@ -1,5 +1,5 @@
 package com.gulusoft.test;
-
+//com.gulusoft.test.TestDomainRev
 import static org.junit.Assert.*;
 
 import java.io.BufferedReader;
@@ -124,8 +124,8 @@ public class TestDomainRev {
 	@Test
 	public void test() throws InvalidKeyException, NoSuchAlgorithmException, IOException, ServerException, ClientException {
 		
-		String domainName = "gulusoft.com";
-		String homeRecordRr = "home";
+		String domainName = this.getRootDomainName();
+		String homeRecordRr = this.getHostName();
 		
 		IClientProfile clientProfile = DefaultProfile.getProfile("cn-hangzhou", this.AccessKeyId, this.AccessKeySec );  
 		DefaultAcsClient client = new DefaultAcsClient(clientProfile);  
